@@ -1,14 +1,14 @@
 # Don't compress/strip/[compile python]
 %define __os_install_post %{nil}
 %define name smorg-chroot-master-initd
-%define version 1.0.0
+%define version 1
 %define release 1
 # RH6 is more strict (and it's right! - the 'wrapper's should be built here)
 %define debug_package %{nil}
 
 Summary: Package to deploy init scripts for a chroot'ed nagios
 Name: smorg-chroot-master-initd
-Version: 1.0.0
+Version: 1
 Release: 1
 License: GPL
 Group: Applications/System
