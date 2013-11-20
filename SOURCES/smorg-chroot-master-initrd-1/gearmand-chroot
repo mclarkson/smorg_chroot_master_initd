@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# gearmand        Startup script for the Gearman server
+#
+# chkconfig: - 85 15
+# description: Gearman is a distributed job system.
+# processname: gearmand
+# config: $CHROOT_ROOT/etc/sysconfig/gearmand
+# pidfile: $CHROOT_ROOT/var/run/gearmand/gearmand.pid
+#
+### BEGIN INIT INFO
+# Provides: gearmand
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Default-Start:
+# Default-Stop:
+# Short-Description: start and stop the Gearman server
+# Description: Gearman is a distributed job system.
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+. /etc/rc.d/init.d/chroot-functions
+
+if [ -f /etc/sysconfig/smorg-chroot ]; then
+        . /etc/sysconfig/smorg-chroot
+else
+    echo "Please set CHROOT_ROOT in /etc/sysconfig/smorg-chroot."
+    echo "Aborting."
+    exit 1
+fi
+
+prog=gearmand
+
+RETVAL=0
+
+start() {
+        chroot $CHROOT_ROOT/ service $prog start
+        RETVAL=$?
+        return $RETVAL
+}
+
+stop() {
+        chroot $CHROOT_ROOT/ service $prog stop
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        check_chroot
+	start
+	;;
+  stop)
+        check_chroot
+	stop
+	;;
+  status)
+        check_chroot
+        chroot /var/nagios/ service $prog status
+	RETVAL=$?
+	;;
+  restart|reload)
+        check_chroot
+	stop
+	start
+	;;
+  *)
+	echo $"Usage: $prog {start|stop|restart|reload|status|help}"
+	RETVAL=3
+esac
+
+exit $RETVAL
+

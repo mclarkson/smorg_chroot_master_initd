@@ -1,0 +1,3 @@
+# CHROOT_ROOT - The directory where the chroot'ed OS is installed.
+#CHROOT_ROOT=/var/nagios
+

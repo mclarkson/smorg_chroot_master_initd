@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+# crond-chroot        Startup script
+#
+# chkconfig: - 91 15
+# description: cron wrapper
+# processname: crond-chroot
+# config: /var/crond-chroot/etc/sysconfig/crond-chroot
+# pidfile: /var/crond-chroot/var/run/crond-chroot/crond-chroot.pid
+#
+### BEGIN INIT INFO
+# Provides: crond-chroot
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Default-Start:
+# Default-Stop:
+# Short-Description: start and stop
+# Description: 
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+. /etc/rc.d/init.d/chroot-functions
+
+if [ -f /etc/sysconfig/smorg-chroot ]; then
+        . /etc/sysconfig/smorg-chroot
+else
+    echo "Please set CHROOT_ROOT in /etc/sysconfig/smorg-chroot."
+    echo "Aborting."
+    exit 1
+fi
+
+if [ -f /etc/sysconfig/crond-chroot ]; then
+        . /etc/sysconfig/crond-chroot
+fi
+
+prog=crond
+
+RETVAL=0
+
+start() {
+        chroot $CHROOT_ROOT/ service $prog start
+        RETVAL=$?
+        return $RETVAL
+}
+
+stop() {
+        chroot $CHROOT_ROOT/ service $prog stop
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        check_chroot
+	start
+	;;
+  stop)
+        check_chroot
+	stop
+	;;
+  status)
+        check_chroot
+        chroot $CHROOT_ROOT/ service $prog status
+	RETVAL=$?
+	;;
+  restart|reload)
+        check_chroot
+	stop
+	start
+	;;
+  *)
+	echo $"Usage: $prog {start|stop|restart|reload|status|help}"
+	RETVAL=3
+esac
+
+exit $RETVAL
+
