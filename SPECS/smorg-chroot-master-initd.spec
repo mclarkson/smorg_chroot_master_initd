@@ -36,6 +36,8 @@ Copies init scripts that can start nagios related services in a chroot.
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 #install -d -m 0755 ${RPM_BUILD_ROOT}%_libdir/nagios/plugins
+install -d -m 0755 ${RPM_BUILD_ROOT}%_initrddir/
+install -d -m 0755 ${RPM_BUILD_ROOT}%_sysconfdir/
 install -m 755 chroot-functions ${RPM_BUILD_ROOT}%{_initrddir}/chroot-functions
 install -m 755 crond-chroot ${RPM_BUILD_ROOT}%{_initrddir}/crond-chroot
 install -m 755 gearmand-chroot ${RPM_BUILD_ROOT}%{_initrddir}/gearmand-chroot
