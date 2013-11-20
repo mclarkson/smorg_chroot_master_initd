@@ -22,7 +22,7 @@ for DIR in SOURCES SPECS; do
 done
 
 echo ----
-ls -lh
+tree
 echo ----
 cat POINTRELEASE
 echo ----
