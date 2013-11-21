@@ -25,6 +25,12 @@
 if [ -f /etc/sysconfig/smorg-chroot ]; then
         . /etc/sysconfig/smorg-chroot
 else
+    echo "/etc/sysconfig/smorg-chroot not found. Please create it."
+    echo "Aborting"
+    exit 1
+fi
+
+if [ -z $CHROOT_ROOT ]; then
     echo "Please set CHROOT_ROOT in /etc/sysconfig/smorg-chroot."
     echo "Aborting."
     exit 1
