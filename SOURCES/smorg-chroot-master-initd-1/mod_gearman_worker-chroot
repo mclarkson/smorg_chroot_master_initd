@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# npcd        Startup script
+#
+# chkconfig: - 86 15
+# description: mod_gearman_worker wrapper
+# processname: mod_gearman_worker
+# config: $CHROOT_ROOT/etc/sysconfig/mod_gearman_worker
+# pidfile: $CHROOT_ROOT/var/run/npcd/mod_gearman_worker
+#
+### BEGIN INIT INFO
+# Provides: npcd
+# Required-Start: $local_fs $network
+# Required-Stop: $local_fs $network
+# Default-Start:
+# Default-Stop:
+# Short-Description: start and stop
+# Description: 
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+. /etc/rc.d/init.d/chroot-functions
+
+if [ -f /etc/sysconfig/smorg-chroot ]; then
+        . /etc/sysconfig/smorg-chroot
+else
+    echo "/etc/sysconfig/smorg-chroot not found. Please create it."
+    echo "Aborting"
+    exit 1
+fi
+
+if [ -z $CHROOT_ROOT ]; then
+    echo "Please set CHROOT_ROOT in /etc/sysconfig/smorg-chroot."
+    echo "Aborting."
+    exit 1
+fi
+
+prog=mod_gearman_worker
+
+RETVAL=0
+
+start() {
+        chroot $CHROOT_ROOT/ service $prog start
+        RETVAL=$?
+        return $RETVAL
+}
+
+stop() {
+        chroot $CHROOT_ROOT/ service $prog stop
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        check_chroot
+	start
+	;;
+  stop)
+        check_chroot
+	stop
+	;;
+  status)
+        check_chroot
+        chroot $CHROOT_ROOT/ service $prog status
+	RETVAL=$?
+	;;
+  restart|reload)
+        check_chroot
+	stop
+	start
+	;;
+  *)
+	echo $"Usage: $prog {start|stop|restart|reload|status|help}"
+	RETVAL=3
+esac
+
+exit $RETVAL
+
