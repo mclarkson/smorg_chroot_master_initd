@@ -47,6 +47,7 @@ install -m 755 npcd-chroot ${RPM_BUILD_ROOT}%{_initrddir}/npcd-chroot
 install -m 755 rsyslog-chroot ${RPM_BUILD_ROOT}%{_initrddir}/rsyslog-chroot
 install -m 755 ssh-chroot ${RPM_BUILD_ROOT}%{_initrddir}/ssh-chroot
 install -m 755 smorg-chroot ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/smorg-chroot
+install -m 755 mod_gearman_worker-chroot ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/mod_gearman_worker-chroot
 
 
 %files
@@ -59,6 +60,7 @@ install -m 755 smorg-chroot ${RPM_BUILD_ROOT}%{_sysconfdir}/sysconfig/smorg-chro
 %{_initrddir}/npcd-chroot
 %{_initrddir}/rsyslog-chroot
 %{_initrddir}/ssh-chroot
+%{_initrddir}/mod_gearman_worker-chroot
 %config(noreplace) %{_sysconfdir}/sysconfig/smorg-chroot
 
 %clean
